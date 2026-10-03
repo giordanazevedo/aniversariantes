@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aniversariantes de Outubro</title>
+<style>
+:root{--bg:#ffffff;--card:#ffffff;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--a:#7c3aed;--b:#ec4899;--c:#f97316;--ph:#f3f4f6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:480px;width:100%;margin-inline:auto;min-height:100vh;box-shadow:0 0 20px rgba(0,0,0,0.05)}
+header{position:relative;overflow:hidden;padding:44px 24px 56px;color:#fff;background:linear-gradient(135deg,var(--a),var(--b) 60%,var(--c));border-radius:0 0 36px 36px}
+header .eyebrow{font-size:13px;letter-spacing:3px;font-weight:700;opacity:.9}
+header h1{margin:8px 0 6px;font-size:36px;line-height:1.05;font-weight:800}
+header p{margin:0;font-size:16px;opacity:.95}
+.dot{position:absolute;border-radius:50%;background:rgba(255,255,255,.18);animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-14px)}}
+main{padding:20px 16px 40px;display:flex;flex-direction:column;gap:14px}
+.card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px;opacity:0;transform:translateY(18px);animation:in .5s forwards}
+@keyframes in{to{opacity:1;transform:none}}
+.card.today{border:2px solid var(--color, var(--b));box-shadow:0 0 0 4px rgba(0,0,0,0.05)}
+.day{flex:none;width:62px;height:72px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;background:var(--color, linear-gradient(160deg,var(--a),var(--b)))}
+.day small{font-size:11px;letter-spacing:2px;font-weight:700}
+.day strong{font-size:30px;line-height:1}
+.photo{flex:none;position:relative;width:78px;height:78px;border-radius:50%;background:var(--ph);border:3px dashed var(--color, var(--b));overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color, var(--b));font-size:11px;font-weight:700;text-align:center;line-height:1.2;transition:transform .2s}
+.photo:active{transform:scale(.93)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo.has{border:3px solid var(--color, var(--b))}
+.photo input{display:none}
+.info{min-width:0}
+.info h2{margin:0 0 4px;font-size:16px;line-height:1.2;font-weight:700}
+.info p{margin:0;font-size:13px;font-weight:600;color:var(--muted)}
+.info p.hot{color:var(--color, var(--b))}
+.hint{text-align:center;font-size:13px;color:var(--muted);padding:0 24px 28px}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<header>
+<div class="dot" style="width:120px;height:120px;right:-30px;top:-30px"></div>
+<div class="dot" style="width:60px;height:60px;right:90px;bottom:24px;animation-delay:-2s"></div>
+<div class="dot" style="width:34px;height:34px;left:150px;top:30px;animation-delay:-4s"></div>
+<div class="eyebrow">PARABÉNS A TODOS</div>
+<h1>Aniversariantes de Outubro 🎉</h1>
+<p>6 pessoas para celebrar neste mês</p>
+</header>
+<main id="list"></main>
+<p class="hint">Toque no círculo de qualquer pessoa para colocar ou trocar a foto 📸</p>
+<script>
+var P=[[1,"Cicera Fernanda Soares Veloso da Silva","fernanda.jpg"],[5,"Dulce Melanie Santos Rodrigues","dulce melanie.jpg"],[15,"Fátima de Jesus da Silva","fatima.jpg"],[22,"Liana Mara Lemos Dos Santos Rodrigues","liana.jpg"],[25,"Gerdane Da Conceição Sousa","gerdane.jpg"],[28,"Allan Klayton Oliveira Nascimento","alan.jpg"]];
+var colors=["#7c3aed","#ec4899","#f97316","#3b82f6","#10b981","#f59e0b"];
+var now=new Date(),inOct=now.getMonth()===9,td=now.getDate(),nextP=null,list=document.getElementById("list");
+function status(d){if(!inOct)return"Dia "+d+" de outubro";if(d===td)return"🎉 É hoje! Parabéns!";if(d>td){var n=d-td;return"Faltam "+n+(n===1?" dia":" dias")}return"Já comemorou 🥳"}
+P.forEach(function(p,i){
+  var d=p[0];if(inOct&&d>=td&&!nextP)nextP=p;
+  var c=document.createElement("div");c.className="card"+(inOct&&d===td?" today":"");
+  c.style.animationDelay=(i*0.08+0.1)+"s";
+  c.style.setProperty("--color", colors[i % colors.length]);
+  c.innerHTML='<div class="day"><small>DIA</small><strong>'+d+'</strong></div>'+
+  '<label class="photo'+(p[2]?' has':'')+'" title="Trocar foto">'+(p[2]?'<img src="'+p[2]+'" alt="'+p[1]+'">':'📷<br>+ foto')+'<input type="file" accept="image/*"></label>'+
+  '<div class="info"><h2></h2><p class="'+(inOct&&d>=td?'hot':'')+'"></p></div>';
+  c.querySelector("h2").textContent=p[1];c.querySelector(".info p").textContent=status(d);
+  var inp=c.querySelector("input"),ph=c.querySelector(".photo");
+  inp.addEventListener("change",function(){var f=inp.files[0];if(!f)return;var img=document.createElement("img");img.alt=p[1];img.src=URL.createObjectURL(f);ph.textContent="";ph.title="Trocar foto";ph.appendChild(img);ph.appendChild(inp);ph.classList.add("has");boom()});
+  list.appendChild(c)
+});
+function boom(){var cols=["#7c3aed","#ec4899","#f97316","#fbbf24","#22c55e"];for(var i=0;i<40;i++){var e=document.createElement("div");e.className="confetti";e.style.left=Math.random()*100+"vw";e.style.background=cols[i%5];e.style.animationDuration=(1.6+Math.random()*1.6)+"s";e.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(e);setTimeout(function(x){x.remove()},4000,e)}}
+if(inOct&&P.some(function(p){return p[0]===td}))boom();
+</script>
+</body>
+</html>
